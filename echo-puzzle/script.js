@@ -58,6 +58,14 @@ const STAGES = [
     goal: "壁・穴・一方通行床を読み、待機で同時押しを完成させる。",
     map: ["#########", "#O.....O#", "#.E>S.PS#", "#.#O.O#.#", "#...^...#", "#.......#", "#########"],
     testSolution: "RRR",
+  },
+];
+
+const hasDocument = typeof document !== "undefined";
+const board = hasDocument ? document.getElementById("board") : null;
+const stageLabel = hasDocument ? document.getElementById("stageLabel") : null;
+const stageGoal = hasDocument ? document.getElementById("stageGoal") : null;
+const message = hasDocument ? document.getElementById("message") : null;
     map: ["#########", "#O.....O#", "#..E>SPS#", "#.#O.O#.#", "#...^...#", "#.......#", "#########"],
   },
 ];
@@ -134,6 +142,53 @@ function checkClear() {
   }
 }
 
+function moveFromTestCommand(command) {
+  const moves = {
+    U: DIRECTIONS.ArrowUp,
+    D: DIRECTIONS.ArrowDown,
+    L: DIRECTIONS.ArrowLeft,
+    R: DIRECTIONS.ArrowRight,
+  };
+  return moves[command];
+}
+
+function simulateStageSolution(stage) {
+  const previousState = state;
+  state = parseStage(stage);
+
+  for (const command of stage.testSolution) {
+    const move = moveFromTestCommand(command);
+    if (!move) throw new Error(`Unknown test command: ${command}`);
+    const echoMove = state.pendingEchoMove;
+    state.player = moveActor(state.player, move);
+    state.echo = moveActor(state.echo, echoMove);
+    state.pendingEchoMove = move;
+
+    if (tileAt(state.player) === TILE.HOLE || tileAt(state.echo) === TILE.HOLE) {
+      const result = { stage: stage.name, solution: stage.testSolution, clear: false, reason: "actor fell into a hole" };
+      state = previousState;
+      return result;
+    }
+  }
+
+  const clear = state.switches.every((sw) => same(sw, state.player) || same(sw, state.echo)) && !same(state.player, state.echo);
+  const result = {
+    stage: stage.name,
+    solution: stage.testSolution,
+    clear,
+    player: { ...state.player },
+    echo: { ...state.echo },
+    switches: state.switches.map((sw) => ({ ...sw })),
+    reason: clear ? "clear" : "switches not covered",
+  };
+  state = previousState;
+  return result;
+}
+
+function runStageSelfTests() {
+  return STAGES.map(simulateStageSolution);
+}
+
 function handleMove(move) {
   if (state.lost || state.won) return;
   const echoMove = state.pendingEchoMove;
@@ -183,6 +238,31 @@ function actor(kind, both) {
   return el;
 }
 
+if (hasDocument) {
+  const selfTestResults = runStageSelfTests();
+  if (selfTestResults.some((result) => !result.clear)) {
+    console.error("Stage self-test failed", selfTestResults);
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.code === "KeyR") {
+      event.preventDefault();
+      restartStage();
+      return;
+    }
+    const move = DIRECTIONS[event.code];
+    if (move) {
+      event.preventDefault();
+      handleMove(move);
+    }
+  });
+
+  restartStage("矢印キーまたはWASDで移動してください。");
+}
+
+if (typeof module !== "undefined") {
+  module.exports = { STAGES, runStageSelfTests };
+}
 document.addEventListener("keydown", (event) => {
   if (event.code === "KeyR") {
     event.preventDefault();

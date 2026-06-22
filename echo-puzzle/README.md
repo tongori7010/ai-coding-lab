@@ -61,6 +61,14 @@ echo-puzzle/
 | 4 | `RRR` | 一方通行床から残響を左スイッチへ送る |
 | 5 | `RRR` | 穴と一方通行床を含む総合配置を確認する |
 
+## クリア可能性テスト
+
+`script.js` はブラウザ外でもステージ検証だけを実行できるようにしてあります。次のコマンドで、各ステージの `testSolution` が実際に2つのスイッチを同時に押せることを確認できます。
+
+```bash
+node -e "const { runStageSelfTests } = require('./echo-puzzle/script.js'); const results = runStageSelfTests(); console.log(results); if (!results.every((result) => result.clear)) process.exit(1);"
+```
+
 ## ローカルでの起動方法
 
 ビルドやnpmは不要です。`index.html` をブラウザで直接開くか、任意で次のようなローカルサーバーから開けます。
