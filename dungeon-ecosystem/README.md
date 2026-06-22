@@ -18,6 +18,29 @@ npm run dev
 npm run build
 ```
 
+## GitHub Pages での確認方法
+
+このプロジェクトは、リポジトリ直下の `.github/workflows/deploy-dungeon-ecosystem.yml` で GitHub Pages にデプロイできます。
+
+### 公開 URL
+
+`main` ブランチへ push した後、または GitHub Actions の `Deploy dungeon-ecosystem to GitHub Pages` workflow を手動実行した後、以下の形式の URL で確認します。
+
+```text
+https://<GitHubユーザー名またはOrganization名>.github.io/ai-coding-lab/
+```
+
+このリポジトリが Project Pages として公開される前提のため、Vite の `base` は `/ai-coding-lab/` に設定しています。リポジトリ名を変更した場合は、`vite.config.ts` の `base` も新しいリポジトリ名に合わせて更新してください。
+
+### GitHub 側で必要な Pages 設定
+
+GitHub リポジトリの画面で以下を設定してください。
+
+1. `Settings` → `Pages` を開く
+2. `Build and deployment` の `Source` で `GitHub Actions` を選択する
+3. `main` ブランチへ push する、または `Actions` タブから `Deploy dungeon-ecosystem to GitHub Pages` を `Run workflow` で実行する
+4. workflow の完了後、`deploy` job の `github-pages` environment URL、または上記の公開 URL を開く
+
 ## 操作方法
 
 - マウスクリック: 土ブロックを掘って通路にする
@@ -56,9 +79,12 @@ npm run build
 dungeon-ecosystem/
 ├── index.html          # Vite エントリ HTML
 ├── package.json        # npm scripts と依存関係
+├── vite.config.ts      # GitHub Pages 用の Vite base 設定
 ├── tsconfig.json       # TypeScript 設定
 ├── README.md           # この説明書
 └── src/
     ├── main.ts         # ゲーム状態、描画、AI、戦闘、入力処理
     └── style.css       # 画面レイアウトと UI スタイル
 ```
+
+GitHub Pages 用の workflow は、リポジトリ直下の `.github/workflows/deploy-dungeon-ecosystem.yml` にあります。
