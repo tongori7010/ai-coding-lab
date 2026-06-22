@@ -18,7 +18,6 @@ npm run dev
 npm run build
 ```
 
-
 ## GitHub Pages での確認方法
 
 このプロジェクトは、リポジトリ直下の `.github/workflows/deploy-dungeon-ecosystem.yml` で GitHub Pages にデプロイできます。
@@ -31,7 +30,7 @@ npm run build
 https://<GitHubユーザー名またはOrganization名>.github.io/ai-coding-lab/
 ```
 
-このリポジトリが Project Pages として公開される前提のため、Vite の `base` は `/ai-coding-lab/` に設定しています。
+このリポジトリが Project Pages として公開される前提のため、Vite の `base` は `/ai-coding-lab/` に設定しています。リポジトリ名を変更した場合は、`vite.config.ts` の `base` も新しいリポジトリ名に合わせて更新してください。
 
 ### GitHub 側で必要な Pages 設定
 
