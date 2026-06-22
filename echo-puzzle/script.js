@@ -26,24 +26,32 @@ const STAGES = [
     goal: "右へ進んだあと、壁に向かってもう一度入力すると残響が左スイッチに乗ることを学ぶ。",
     map: ["#######", "#.....#", "#ES.PS#", "#.....#", "#######"],
     testSolution: "RR",
+const STAGES = [
+  {
+    name: "1: 追従の基本",
+    goal: "右へ進み、壁に当たって待つと残響が追いつくことを学ぶ。",
+    map: ["########", "#......#", "#.SEPS.#", "#......#", "########"],
   },
   {
     name: "2: 壁で距離を作る",
     goal: "壁沿いに進んで、最後は壁を待機に使う。",
     map: ["#########", "#.......#", "#ES.PS#.#", "#.#####.#", "#.......#", "#########"],
     testSolution: "RR",
+    map: ["#########", "#.......#", "#.#SEPS.#", "#.#.###.#", "#.......#", "#########"],
   },
   {
     name: "3: 穴を避ける",
     goal: "安全な通路で待ち、残響を穴へ誘導しないことを学ぶ。",
     map: ["#########", "#O.....O#", "#ES.PS#.#", "#..O.O..#", "#.......#", "#########"],
     testSolution: "RR",
+    map: ["#########", "#O.....O#", "#..SEPS.#", "#..O.O..#", "#.......#", "#########"],
   },
   {
     name: "4: 一方通行床",
     goal: "一方通行床は矢印方向にだけ出られることを使う。",
     map: ["########", "#......#", "#E>S.PS#", "#...^..#", "#......#", "########"],
     testSolution: "RRR",
+    map: ["########", "#......#", "#.E>SPS#", "#...^..#", "#......#", "########"],
   },
   {
     name: "5: 総合問題",
@@ -58,6 +66,14 @@ const board = hasDocument ? document.getElementById("board") : null;
 const stageLabel = hasDocument ? document.getElementById("stageLabel") : null;
 const stageGoal = hasDocument ? document.getElementById("stageGoal") : null;
 const message = hasDocument ? document.getElementById("message") : null;
+    map: ["#########", "#O.....O#", "#..E>SPS#", "#.#O.O#.#", "#...^...#", "#.......#", "#########"],
+  },
+];
+
+const board = document.getElementById("board");
+const stageLabel = document.getElementById("stageLabel");
+const stageGoal = document.getElementById("stageGoal");
+const message = document.getElementById("message");
 
 let stageIndex = 0;
 let state;
@@ -247,3 +263,17 @@ if (hasDocument) {
 if (typeof module !== "undefined") {
   module.exports = { STAGES, runStageSelfTests };
 }
+document.addEventListener("keydown", (event) => {
+  if (event.code === "KeyR") {
+    event.preventDefault();
+    restartStage();
+    return;
+  }
+  const move = DIRECTIONS[event.code];
+  if (move) {
+    event.preventDefault();
+    handleMove(move);
+  }
+});
+
+restartStage("矢印キーまたはWASDで移動してください。");
