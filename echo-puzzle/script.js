@@ -19,6 +19,7 @@ const DIRECTIONS = {
   KeyD: { x: 1, y: 0, symbol: ">" },
 };
 
+// Keep each testSolution in sync with the map so merge-conflict resolutions preserve solvable stages.
 const STAGES = [
   {
     name: "1: 追従の基本",
