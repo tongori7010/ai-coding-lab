@@ -8,31 +8,30 @@
 </head>
 <body>
   <main class="app">
-    <header class="hero">
+    <header>
       <h1>残響パズル</h1>
-      <p>1ターン遅れて動く「残響」と協力して、2つのスイッチを同時に押そう。</p>
+      <p>1ターン遅れで動く残響と協力して、2つのスイッチを同時に押そう。</p>
     </header>
 
-    <section class="panel status-panel" aria-live="polite">
-      <div><strong>ステージ:</strong> <span id="stageLabel"></span></div>
-      <div><strong>狙い:</strong> <span id="stageGoal"></span></div>
-      <div><strong>操作:</strong> 矢印キー / WASDで移動、Rでリスタート</div>
+    <section class="panel info" aria-live="polite">
+      <p><strong>現在ステージ:</strong> <span id="stageLabel"></span></p>
+      <p><strong>狙い:</strong> <span id="stageGoal"></span></p>
+      <p><strong>操作:</strong> 矢印キー / WASDで移動、Rでリスタート</p>
+      <p id="message" class="message"></p>
     </section>
 
-    <section class="game-layout">
+    <section class="play-area">
       <div id="board" class="board" aria-label="ゲーム盤"></div>
       <aside class="panel legend">
         <h2>凡例</h2>
         <ul>
-          <li><span class="chip player-chip"></span> プレイヤー</li>
-          <li><span class="chip echo-chip"></span> 残響</li>
-          <li><span class="chip wall-chip"></span> 壁</li>
-          <li><span class="chip hole-chip"></span> 穴</li>
-          <li><span class="chip switch-chip"></span> スイッチ</li>
-          <li><span class="chip goal-chip"></span> ゴール表示</li>
-          <li><span class="chip arrow-chip">→</span> 一方通行床</li>
+          <li><span class="sample player-sample"></span> プレイヤー</li>
+          <li><span class="sample echo-sample"></span> 残響</li>
+          <li><span class="sample wall-sample"></span> 壁</li>
+          <li><span class="sample hole-sample"></span> 穴</li>
+          <li><span class="sample switch-sample"></span> スイッチ</li>
+          <li><span class="sample oneway-sample">→</span> 一方通行床</li>
         </ul>
-        <p id="message" class="message"></p>
       </aside>
     </section>
   </main>
